@@ -83,7 +83,7 @@ void loop () {
   if (digitalRead(4) == 0){
       y++;
       if(y == 1){
-        if(mode>6){
+        if(mode>7){
           mode = 0;
         }
         else{
@@ -101,18 +101,21 @@ void loop () {
 
   if (mode == 0){
     rainbow_wave(20, -15);                                      // Speed, delta hue values.
-  }
+  }else
   if (mode == 2){
-    for (int i = 4; i < 16; i++){
-      leds[i] = CRGB::White;
+    z = (z + 1) % 600;
+    int v = (int)((sin((float)z / 600.0f * 6.283f) / 2.0f + 0.5f) * 255.0f);
+    for (int i = 0; i < 16; i++){
+      fill_solid( leds, NUM_LEDS, CRGB(v, v, 0));
     }
-    for (int i = 0; i < 4; i++){
-      leds[i] = CRGB(255, 50, 50);
-    }
-  }
+  }else
   if (mode == 1){
-    fill_solid( leds, NUM_LEDS, CRGB(255, 50, 50));
-  }
+    z = (z + 1) % 200;
+    for (int i = 0; i < 16; i++){
+      int v = (int)((sin(((float)z / 200.0f + (float)i / 16.0f) * 6.283f) / 2.0f + 0.5f) * 255.0f);
+      leds[i] = CRGB(v, v, 0);
+    }
+  }else
   if (mode == 3){
     delay(1);
     z ++;
@@ -130,18 +133,21 @@ void loop () {
         z = 0;
       }
     }
-  }
+  }else
   if (mode == 4){
     fill_solid( leds, NUM_LEDS, CRGB::Red);
-  }
+  }else
   if (mode == 5){
     fill_solid( leds, NUM_LEDS, CRGB::Green);
-  }
+  }else
   if (mode == 6){
     fill_solid( leds, NUM_LEDS, CRGB::Blue);
-  }
+  }else
   if (mode == 7){
     fill_solid( leds, NUM_LEDS, CRGB::White);
+  }else
+  if (mode == 8){
+    fill_solid( leds, NUM_LEDS, CRGB::Yellow);
   }
   
   FastLED.show();
